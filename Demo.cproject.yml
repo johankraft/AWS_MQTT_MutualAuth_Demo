@@ -71,6 +71,7 @@ project:
     - group: main
       files:
         - file: ./app_main.c
+        - file: ./badalloc_heap.c
     - group: config_files
       files:
         - file: ./config_files/aws_demo_config.h

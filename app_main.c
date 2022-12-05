@@ -53,7 +53,7 @@ const HeapRegion_t xHeapRegions[] = {
 /*---------------------------------------------------------------------------
  * Application main thread
  *---------------------------------------------------------------------------*/
-static void app_main (void *argument) {
+static void app_main2 (void *argument) {
   int32_t status;
 
   (void)argument;
@@ -68,6 +68,64 @@ static void app_main (void *argument) {
   osDelay(osWaitForever);
   for (;;) {}
 }
+
+extern void * badalloc_malloc( size_t xWantedSize );
+#define malloc badalloc_malloc
+#define free badalloc_free
+
+// Idea - Add the old BadAlloc "malloc" function and make an example exploit
+// Like pvPortMalloc(reqeust.size) where size is 0xFFFF FFFF leads to 7 byte allocation
+// What should it be? Buffer overrun?
+
+#define MAX_SIZE 256
+
+typedef struct
+{
+  int type;
+  int size;
+  char message[MAX_SIZE]; 
+} request_t;
+
+
+char* copy_message(request_t* req)
+{
+    char* response;
+
+    // Input validation (insufficient)
+    if (req->size > MAX_SIZE) 
+        return NULL;
+    
+    printf("malloc(0x%08X)\n", req->size);
+ 
+    // Allocates only 8 bytes when req->size is 0xFFFFFFFF (-1)
+    response = malloc(req->size);
+    
+    // Causes buffer overrun, corrupting "otherbuffer" since allocation is smaller than expected
+    strcpy(response, req->message);
+    return response;
+}
+
+static void app_main (void *argument) 
+{
+    // An inbound network request
+    request_t req = {42, -1, "                        ABCDEFGHIJ"};
+
+    printf("\nBadAlloc demo\n");
+  
+    // Some setup needed to reproduce the issue
+    char* temp = malloc(12);
+    char* otherbuffer = malloc(256);
+    free(temp); 
+
+    sprintf(otherbuffer, "1234567890");
+    printf("otherbuffer before malloc: \"%s\"\n", otherbuffer);
+
+    copy_message(&req); // uses vulnareble malloc
+
+    printf("otherbuffer after malloc: \"%s\"\n", otherbuffer);
+}
+
+
 
 /*---------------------------------------------------------------------------
  * Application initialization

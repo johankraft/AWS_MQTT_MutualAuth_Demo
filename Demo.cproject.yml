@@ -23,8 +23,9 @@ project:
   #     - STDERR:
   #     - Heap : 65536
 
-  add-paths:
-    - ./config_files
+  add-paths:    
+    - ./PercepioTraceRecorder/include
+    - ./PercepioTraceRecorder/config
     - ./amazon-freertos/demos/include
     - ./amazon-freertos/demos/network_manager
     - ./amazon-freertos/demos/common/pkcs11_helpers
@@ -70,8 +71,35 @@ project:
         - file: ./README.md
     - group: main
       files:
-        - file: ./app_main.c
-        - file: ./badalloc_heap.c
+        - file: ./app_main.c    
+    - group: PercepioTraceRecorder
+      files:    
+        - file: ./PercepioTraceRecorder/trcAssert.c
+        - file: ./PercepioTraceRecorder/trcCounter.c
+        - file: ./PercepioTraceRecorder/trcDiagnostics.c
+        - file: ./PercepioTraceRecorder/trcEntryTable.c
+        - file: ./PercepioTraceRecorder/trcError.c
+        - file: ./PercepioTraceRecorder/trcEvent.c
+        - file: ./PercepioTraceRecorder/trcEventBuffer.c
+        - file: ./PercepioTraceRecorder/trcExtension.c
+        - file: ./PercepioTraceRecorder/trcHardwarePort.c
+        - file: ./PercepioTraceRecorder/trcHeap.c
+        - file: ./PercepioTraceRecorder/trcInternalEventBuffer.c
+        - file: ./PercepioTraceRecorder/trcInterval.c
+        - file: ./PercepioTraceRecorder/trcISR.c
+        - file: ./PercepioTraceRecorder/trcKernelPort.c
+        - file: ./PercepioTraceRecorder/trcMultiCoreEventBuffer.c
+        - file: ./PercepioTraceRecorder/trcObject.c
+        - file: ./PercepioTraceRecorder/trcPrint.c
+        - file: ./PercepioTraceRecorder/trcSnapshotRecorder.c
+        - file: ./PercepioTraceRecorder/trcStackMonitor.c
+        - file: ./PercepioTraceRecorder/trcStateMachine.c
+        - file: ./PercepioTraceRecorder/trcStaticBuffer.c
+        - file: ./PercepioTraceRecorder/trcStreamingRecorder.c
+        - file: ./PercepioTraceRecorder/trcStreamPort.c
+        - file: ./PercepioTraceRecorder/trcString.c
+        - file: ./PercepioTraceRecorder/trcTask.c
+        - file: ./PercepioTraceRecorder/trcTimestamp.c
     - group: config_files
       files:
         - file: ./config_files/aws_demo_config.h
@@ -81,7 +109,7 @@ project:
         - file: ./config_files/core_pkcs11_config.h
         - file: ./config_files/iot_config.h
         - file: ./config_files/iot_secure_sockets_config.h
-        - file: ./config_files/mqtt_demo_mutual_auth_config.h
+        - file: ./config_files/mqtt_demo_mutual_auth_config.h     
     - group: demos_include
       files:
         - file: ./amazon-freertos/demos/include/aws_clientcredential.h
@@ -98,7 +126,7 @@ project:
         - file: ./amazon-freertos/demos/demo_runner/iot_demo_freertos.c
         - file: ./amazon-freertos/demos/coreMQTT/mqtt_demo_mutual_auth.c
         - file: ./amazon-freertos/demos/network_manager/aws_iot_network_manager.c
-        - file: ./amazon-freertos/demos/common/pkcs11_helpers/pkcs11_helpers.c
+        - file: ./amazon-freertos/demos/common/pkcs11_helpers/pkcs11_helpers.c        
     - group: libraries
       defines:
         - MBEDTLS_CONFIG_FILE="aws_mbedtls_config.h"

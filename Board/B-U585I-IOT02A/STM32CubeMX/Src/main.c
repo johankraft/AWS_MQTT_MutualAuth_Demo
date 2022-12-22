@@ -176,6 +176,8 @@ int main(void)
   SystemCoreClockUpdate();
   /* USER CODE END SysInit */
 
+  xTraceEnable(TRC_START);
+
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_ADF1_Init();

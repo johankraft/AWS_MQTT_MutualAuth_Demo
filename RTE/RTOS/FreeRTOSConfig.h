@@ -52,7 +52,7 @@
 //  <o>Minimal stack size [words] <0-65535>
 //  <i> Stack for idle task and default task stack in words.
 //  <i> Default: 128
-#define configMINIMAL_STACK_SIZE                ((uint16_t)(90))
+#define configMINIMAL_STACK_SIZE                ((uint16_t)(190))
 
 //  <o>Total heap size [bytes] <0-0xFFFFFFFF>
 //  <i> Heap memory size in bytes.
@@ -291,9 +291,8 @@ void vLoggingPrintf( const char * pcFormat, ... );
 #define configHEAP_REGION0_ADDR                 0
 #define configHEAP_REGION0_SIZE                 configTOTAL_HEAP_SIZE
 
-//#define traceMALLOC( pvReturn, xWantedSize ) printf("Allocated buffer size: %d bytes, at address 0x%08X\n", xWantedSize, pvReturn);
-
-//#define traceFREE(pv,x) printf("Freed buffer size: %d bytes, at address 0x%08X\n", x, pv);
-
 
 #endif /* FREERTOS_CONFIG_H */
+
+
+#include <trcRecorder.h>

@@ -17,11 +17,17 @@
  * -------------------------------------------------------------------------- */
 
 #include <stdio.h>
+#include <stdint.h>
+#include <time.h>
+
 #include "main.h"
 #include "cmsis_os2.h"
 #include "FreeRTOS.h"
 #include "iot_logging_task.h"
 #include "aws_demo.h"
+
+#include "trcRecorder.h"
+
 
 
 /* Set logging task as high priority task */
@@ -50,10 +56,12 @@ const HeapRegion_t xHeapRegions[] = {
 };
 #endif
 
+extern uint32_t uiTraceTickCount;
+
 /*---------------------------------------------------------------------------
  * Application main thread
  *---------------------------------------------------------------------------*/
-static void app_main2 (void *argument) {
+static void app_main (void *argument) {
   int32_t status;
 
   (void)argument;
@@ -62,70 +70,96 @@ static void app_main2 (void *argument) {
 
   if (status == 0) {
     /* Start demos. */
-    DEMO_RUNNER_RunDemos();
+   // DEMO_RUNNER_RunDemos();
   }
 
   osDelay(osWaitForever);
   for (;;) {}
 }
 
+
+
+
+
+
+/* Test for marketing example */
+#if(0)
 extern void * badalloc_malloc( size_t xWantedSize );
 #define malloc badalloc_malloc
 #define free badalloc_free
-
-// Idea - Add the old BadAlloc "malloc" function and make an example exploit
-// Like pvPortMalloc(reqeust.size) where size is 0xFFFF FFFF leads to 7 byte allocation
-// What should it be? Buffer overrun?
 
 #define MAX_SIZE 256
 
 typedef struct
 {
   int type;
-  int size;
+  size_t size;
   char message[MAX_SIZE]; 
 } request_t;
 
 
-char* copy_message(request_t* req)
-{
-    char* response;
 
-    // Input validation (insufficient)
-    if (req->size > MAX_SIZE) 
-        return NULL;
-    
-    printf("malloc(0x%08X)\n", req->size);
- 
-    // Allocates only 8 bytes when req->size is 0xFFFFFFFF (-1)
-    response = malloc(req->size);
-    
-    // Causes buffer overrun, corrupting "otherbuffer" since allocation is smaller than expected
-    strcpy(response, req->message);
-    return response;
-}
+char* otherbuffer = NULL;
 
-static void app_main (void *argument) 
+// An inbound network request
+request_t req1 = {42, 0xFFFFFFF0, "            DataFromNetworkMessage"};
+
+#define get_message_ptr() &req1
+
+#define get_time() 1669303021
+
+static void app_main_test (void *argument) 
 {
-    // An inbound network request
-    request_t req = {42, -1, "                        ABCDEFGHIJ"};
+    int max_length;
+    char* formatted_data;
+    request_t* request = NULL;
 
     printf("\nBadAlloc demo\n");
   
     // Some setup needed to reproduce the issue
     char* temp = malloc(12);
-    char* otherbuffer = malloc(256);
+    otherbuffer = malloc(256);
     free(temp); 
 
-    sprintf(otherbuffer, "1234567890");
-    printf("otherbuffer before malloc: \"%s\"\n", otherbuffer);
+    sprintf(otherbuffer, "OriginalData");
+    
 
-    copy_message(&req); // uses vulnareble malloc
 
-    printf("otherbuffer after malloc: \"%s\"\n", otherbuffer);
+    printf("Adjacent memory before malloc: \"%s\"\n", otherbuffer);
+    request = get_message_ptr();
+    max_length = request->size + 15;
+
+    if (max_length > MAX_SIZE) return; // max_length is accidentally signed integer (-1)...
+        
+    printf("malloc(0x%08X)\n", max_length);
+    
+    formatted_data = malloc(max_length); // Called with 0xFFFFFFFF - allocates 8 bytes instead of fails
+
+    if (formatted_data != NULL){                
+        sprintf(formatted_data, "%d: %s", get_time(), request->message);
+    }
+    printf("Adjacent memory after malloc: \"%s\"\n", otherbuffer);
 }
+#endif
 
 
+
+void vApplicationIdleHook( void )
+{    
+    if (RecorderDataPtr != NULL)
+    {
+        
+        //printf("Recorder events: %d\n", RecorderDataPtr->numEvents);
+        if (RecorderDataPtr->internalErrorOccured == 1)
+        {
+            printf("Error in recorder: \"%s\"\n", RecorderDataPtr->systemInfo);
+            
+            portDISABLE_INTERRUPTS();
+            for(;;);
+        }
+
+    }
+}
 
 /*---------------------------------------------------------------------------
  * Application initialization

@@ -7,6 +7,7 @@ backend:
 upload:
   - amazon-freertos/**/*
   - config_files/**/*
+  - TraceRecorder/**/*
   - Board/**/*
   - Socket/**/*
   - RTE/**/*

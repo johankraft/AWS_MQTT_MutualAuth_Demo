@@ -20,15 +20,19 @@
 #include  CMSIS_device_header
 #include "cmsis_os2.h"
 #include "cmsis_vio.h"
-#ifdef RTE_Compiler_EventRecorder
-#include "EventRecorder.h"
-#endif
+//#ifdef RTE_Compiler_EventRecorder
+//#include "EventRecorder.h"
+//#endif
 
 #include "main.h"
+
+#include "trcRecorder.h"
 
 extern int stdio_init (void);
 
 int main (void) {
+
+  xTraceEnable(TRC_START);
 
   stdio_init();                         // Initialize stdio
 

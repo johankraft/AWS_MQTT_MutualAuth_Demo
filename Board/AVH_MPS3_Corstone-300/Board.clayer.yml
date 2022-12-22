@@ -30,6 +30,7 @@ layer:
 
   add-paths:
     - .
+    - ./../../../../
 
   defines:
     - CMSIS_VIN

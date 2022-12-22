@@ -1,3 +1,6 @@
+Note to self: Have added the Percepio trace recorder in snapshot mode (reverted the "badalloc" example), but there is a runtime error in trcSnapshotRecorder.c. See also 7584.
+
+
 AWS coreMQTT Mutual Authentication Demo
 =======================================
 

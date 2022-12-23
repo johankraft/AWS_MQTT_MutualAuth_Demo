@@ -1,0 +1,18 @@
+- Start first time by double-clicking the project file (Demo.Debug+AVH.cprj)
+
+- Missing packs will be detected by uvision. Make sure to approve importing all packs
+
+- Project - Options - Device: Verify that SSE-300-MPS3 is selected (/Arm/Arm Cortex M55/SSE-300-MPS3)
+
+- Project - Options - Debug: DON'T select "Use Simulator" but instead "Use:" - "Models Armv8-M Debugger" (in the right column)
+- Project - Options - Debug - Initialization File: Create and provide path to "vht-mdk.ini", containing the following line: "CORE_CLK=100000000"
+
+- Project - Options - Debug - Setting button (top right):
+  - Command: C:\Keil_v5\ARM\VHT\VHT_MPS3_Corstone_SSE-300.exe
+  - Target: cpu0
+  - Configuration file: Create and provide path to "mdk_config.txt" (empty file for now, not sure if needed)
+  
+- Enable Telnet client in Windows features.
+  - Open Start > Settings.
+  - In the search box, type Turn Windows features on or off ("Valfria funktioner") and click on the suggested item. The Windows Features dialog opens.
+  - Select the Telnet Client check box and click OK.

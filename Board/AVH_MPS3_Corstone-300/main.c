@@ -30,8 +30,12 @@
 
 extern int stdio_init (void);
 
-int main (void) {
+void _platform_post_stackheap_init (void) {
+	xTraceInitialize();
+}
 
+int main (void) {
+	
   xTraceEnable(TRC_START);
 
   stdio_init();                         // Initialize stdio

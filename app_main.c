@@ -66,11 +66,13 @@ static void app_main (void *argument) {
 
   (void)argument;
 
+	printf("Testing Percepio Trace Recorder on AVH\n\r");
+
   status = socket_startup();
 
   if (status == 0) {
     /* Start demos. */
-   // DEMO_RUNNER_RunDemos();
+    DEMO_RUNNER_RunDemos();
   }
 
   osDelay(osWaitForever);

@@ -3,7 +3,13 @@ Demo of Percepio Tracealyzer on Arm Virtual Hardware with AWS
 
 (Based on the AWS coreMQTT Mutual Authentication Demo, below)
 
-So far, I have only added the TraceRecorder and sorted out some integration issues. Next step is to find a way to download the traces.
+So far, I have only added the TraceRecorder and sorted out some integration issues. This seems to work now, but I don't have a way to access the trace files when running on AVH in Keil Studio Cloud. 
+
+Next steps:
+- Verify tracing locally in Keil MDK.
+- Find a way to download the traces from Keil Studio Cloud.
+- Setup AWS connection (skipped that initially) and verify the MQTT demo.
+- Setup DevAlert.
 
 AWS coreMQTT Mutual Authentication Demo
 =======================================

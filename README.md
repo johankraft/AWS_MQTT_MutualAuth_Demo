@@ -1,7 +1,12 @@
 Demo of Percepio Tracealyzer on Arm Virtual Hardware with AWS
 =============================================================
 
-(Based on the AWS coreMQTT Mutual Authentication Demo)
+(Based on the AWS coreMQTT Mutual Authentication Demo, below)
+
+So far, I have only added the TraceRecorder and sorted out some integration issues. Next step is to find a way to download the traces.
+
+AWS coreMQTT Mutual Authentication Demo
+=======================================
 
 This demo application connects to **AWS MQTT broker** using TLS with mutual authentication between the client and the server.
 It demonstrates the subscribe-publish workflow of MQTT.

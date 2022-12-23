@@ -1,8 +1,7 @@
-Note to self: Have added the Percepio trace recorder in snapshot mode (reverted the "badalloc" example), but there is a runtime error in trcSnapshotRecorder.c. See also 7584.
+Demo of Percepio Tracealyzer on Arm Virtual Hardware with AWS
+=============================================================
 
-
-AWS coreMQTT Mutual Authentication Demo
-=======================================
+(Based on the AWS coreMQTT Mutual Authentication Demo)
 
 This demo application connects to **AWS MQTT broker** using TLS with mutual authentication between the client and the server.
 It demonstrates the subscribe-publish workflow of MQTT.
